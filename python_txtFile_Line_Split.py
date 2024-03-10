@@ -22,4 +22,5 @@ def split_and_save(input_filename, output_prefix, lines_per_file=500):
 input_file = "your_large_text_file.txt"  # 원본 텍스트 파일 이름
 output_prefix = "output_"  # 새로운 파일 이름에 붙일 접두사
 
+# 파일 저장 함수 - 맨뒤에 라인을 넣으면 라인수 만큼 처리해줌
 split_and_save(input_file, output_prefix)
