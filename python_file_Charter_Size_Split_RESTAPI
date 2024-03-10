@@ -1,0 +1,36 @@
+import requests
+
+def split_and_send_by_char_count(input_filename, char_count=20000):
+    try:
+        with open(input_filename, 'r') as original_file:
+            content = original_file.read()
+            total_chars = len(content)
+            num_files = (total_chars + char_count - 1) // char_count
+
+            for i in range(num_files):
+                start_idx = i * char_count
+                end_idx = min((i + 1) * char_count, total_chars)
+                output_filename = f"output_{i + 1}.txt"
+
+                with open(output_filename, 'w') as output_file:
+                    output_file.write(content[start_idx:end_idx])
+
+                print(f"Saved {end_idx - start_idx} characters to {output_filename}")
+
+                # Send data via REST API (replace with your actual API endpoint)
+                api_endpoint = "https://your-api-endpoint.com/upload"
+                payload = {"filename": output_filename, "data": content[start_idx:end_idx]}
+                response = requests.post(api_endpoint, json=payload)
+
+                if response.status_code == 200:
+                    print(f"Data sent successfully for {output_filename}")
+                else:
+                    print(f"Error sending data for {output_filename}. Status code: {response.status_code}")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_filename}' not found.")
+
+# 사용 예시:
+input_file = "your_large_text_file.txt"  # 원본 텍스트 파일 이름
+
+split_and_send_by_char_count(input_file)
